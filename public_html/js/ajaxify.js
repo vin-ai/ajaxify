@@ -1,8 +1,8 @@
 /**!
- * jQuery Tagging 1.0.0
+ * jQuery Ajaxify 1.0.0
  * @version: 1.0.0
  * @author: VINAY Kr. SHARMA http://www.vinay-sharma.com/
- * @date: 2013-04-03
+ * @date: 2013-12-08
  * @copyright: Copyright (c) 2013 VINAY Kr. SHARMA. All rights reserved.
  * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
  * @website: http://www.vinay-sharma.com/
