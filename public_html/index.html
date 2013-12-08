@@ -53,7 +53,7 @@
                         console.log('Uncaught Error.\n' + xhr.responseText);
                     }
                 },
-                always: function(){
+                complete: function(){
                     $(document.body).css({'background-color':'#ffffff'});
                 }
             });
