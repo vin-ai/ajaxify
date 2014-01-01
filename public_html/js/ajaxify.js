@@ -6,6 +6,7 @@
  * @copyright: Copyright (c) 2013 VINAY Kr. SHARMA. All rights reserved.
  * @license: Licensed under Apache License v2.0. See http://www.apache.org/licenses/LICENSE-2.0
  * @website: http://www.vinay-sharma.com/
+ * @param {object} $ jQuery instance
  */
 
 +function($) {
@@ -16,51 +17,73 @@
     var selector = 'a[rel="ajaxify"]';
 
     var Ajaxify = function(element, options) {
-        this.$e = $(element)
+        var __t = $(element);
+        this.$e = __t
                 , this.__o = $.extend({}
                 , Ajaxify.DEFAULTS,
                         $.extend({}
-                        , this.$e.data() || {}
+                        , __t.data() || {}
                         , options
                                 ));
 
-        if (typeof this.__o['updateto'] === 'string') {
-            this.__o['updateto'] = $(this.__o['updateto']);
+        if (typeof this.__o['loadto'] === 'string' && this.__o['loadto'] !== '') {
+            this.__o['loadto'] = $(this.__o['loadto']);
         }
-        var href = this.$e.attr('href');
+        
+        if (this.__o['href'] === null && __t.attr('href') !== undefined) {
+            this.__o['href'] = __t.attr('href');
+        }
 
-        if (this.__o['updateto'].length <= 0 || !href) {
+        if (this.__o['loadto'].length <= 0 || !this.__o['href']) {
             return;
         }
 
         this.__o['beforesend'] = this.__o['beforesend'] || noop;
         this.__o['done'] = this.__o['done'] || noop;
         this.__o['fail'] = this.__o['fail'] || noop;
-        this.__o['always'] = this.__o['beforesend'] || noop;
+        this.__o['always'] = this.__o['always'] || noop;
     };
 
     Ajaxify.DEFAULTS = {
-        updateto: null,
-        type: 'get',
-        async: false,
-        // The element to set `.active` for class attribute
-        activeitem: 'li',
-        // The class attribute value
-        activeclass: 'active'
+        loadto: null
+        , method: 'get'
+        , type: 'html'
+        , data: null
+        , href: null
+        , async: false
+                // The element which contains all the .ajaxify elements
+                // This helps to activate and deactivate active class element
+                // after Ajax load
+        , container: 'ul'
+                // The element to set `.active` for class attribute
+        , activate: 'li'
+                // The class attribute value
+        , activeclass: 'active'
     };
 
     Ajaxify.prototype.trigger = function() {
-        var __opts = this.__o
-                , __settings = {
-                    url: this.$e.attr('href')
+        var __o = this.__o
+                , __t = this.$e
+                , __u = __o['href']
+                , __s = {
+                    data: typeof __o['data'] === 'function' ? __o['data'](__t) : {}
+                    , type: __o['method']
+                    , dataType: __o['type']
                 };
-        $.ajax(__settings)
+        $.ajax(__u, __s)
                 .done(function(d) {
-                    __opts['updateto'].html(d);
+                    __o['loadto'].html(d);
+                    __o['done']();
+                    if (__o['container'] !== '' && __o['activate'] !== '' && __o['activeclass'] !== '') {
+                        var __container = __t.closest(__o['container']);
+                        if (__container.length > 0) {
+                            __container.find(__o['activate']).removeClass(__o['activeclass']);
+                            __t.parent(__o['activate']).addClass(__o['activeclass']);
+                        }
+                    }
                 })
-                .done(__opts['done'])
-                .fail(__opts['fail'])
-                .always(__opts['always']);
+                .fail(__o['fail'])
+                .always(__o['always']);
     };
 
     var old = $.fn.ajaxify;
