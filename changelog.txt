@@ -1,0 +1,21 @@
+0.2.0 (2015-02-22)
+
++ Chg: `noop` is now instance of jQuery.noop() function
++ Chg: Element `selector` changed to `a[data-rel="ajaxify"]`
++ Chg: jQuery elements now prefixed with `$` and renamed to full meaningful word like `$element` earlier it was `__e`
++ Chg: Other variables renamed to meaningful word
++ Enh: Now some configuration can be a function for use flexiblity.
+	+ `load_to`
+	+ `container`
+	+ `activate`
+	+ `data`
++ Chg: Some of Configuration `options` renamed.
+	+ `loadto` => `load_to`
+	+ `activeclass` => `active_class`
+	+ `beforesend` => `before_send`
++ New: Initialized for Node.js Project
++ New: Initialized the Grunt
+
+0.0.1
+
++ Initial Release
